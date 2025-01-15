@@ -1,0 +1,3 @@
+/Users/yejun/projects/DiaryApp/android/app/.cxx/Debug/0h73f441/x86_64/CMakeFiles/appmodules.dir
+/Users/yejun/projects/DiaryApp/android/app/.cxx/Debug/0h73f441/x86_64/CMakeFiles/edit_cache.dir
+/Users/yejun/projects/DiaryApp/android/app/.cxx/Debug/0h73f441/x86_64/CMakeFiles/rebuild_cache.dir

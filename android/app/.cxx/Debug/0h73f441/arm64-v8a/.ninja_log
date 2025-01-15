@@ -1,0 +1,5 @@
+# ninja log v5
+0	13	0	/Users/yejun/projects/DiaryApp/android/app/.cxx/Debug/0h73f441/arm64-v8a/CMakeFiles/cmake.verify_globs	d39d358bfe8e41ad
+0	1460	1736924124994090729	CMakeFiles/appmodules.dir/Users/yejun/projects/DiaryApp/android/app/build/generated/autolinking/src/main/jni/autolinking.cpp.o	61252dfdfe80e95a
+0	1676	1736924125208888323	CMakeFiles/appmodules.dir/OnLoad.cpp.o	eccf6aaab7b4b215
+1676	1730	1736924125266505490	/Users/yejun/projects/DiaryApp/android/app/build/intermediates/cxx/Debug/0h73f441/obj/arm64-v8a/libappmodules.so	d6a0f54e15bf1f5a
