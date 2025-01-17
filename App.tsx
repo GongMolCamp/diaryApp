@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -16,7 +16,9 @@ import LoginScreen from './screens/LoginScreen';
 import MainTabNavigator from './navigators/MainTabNavigator';
 import DetailScreen from './screens/DiaryDetail';
 import SignUpScreen from './screens/SignUpScreen';
-import GlobalState from './contexts';
+import GlobalState from './contexts/index2';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 type RootStackParamList = {
   Login: undefined,
   Main: undefined,
@@ -27,6 +29,8 @@ type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
+
+  
 
   return (
     <GlobalState>
