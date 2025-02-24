@@ -5,17 +5,28 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
+import MessageScreen from './screens/MessageScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import MainTabNavigator from './navigators/MainTabNavigator';
 import { AppProvider } from './contexts/appContext';
 import { RecoilRoot } from 'recoil';
 import { initializeNotifications, useFCMListener, setupForegroundNotificationListener } from './utils/notification';
 
+
 // FCM APNs 토큰 체크 (iOS)
 async function checkAPNsToken() {
   const token = await messaging().getAPNSToken();
   console.log('🔥 APNs Token:', token);
 }
+
+type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  SignUp: undefined;
+  Main: undefined;
+  Message : undefined;
+};
+
 
 const AuthStack = createStackNavigator();
 
@@ -47,6 +58,7 @@ function App(): React.JSX.Element {
             <AuthStack.Screen name="Register" component={RegisterScreen} />
             <AuthStack.Screen name="SignUp" component={SignUpScreen} />
             <AuthStack.Screen name="Main" component={MainTabNavigator} />
+            <AuthStack.Screen name="Message" component={MessageScreen} />
           </AuthStack.Navigator>
         </NavigationContainer>
       </AppProvider>
