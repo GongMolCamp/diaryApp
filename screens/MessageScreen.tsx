@@ -165,10 +165,12 @@ const MessageScreen: React.FC<{ route: any, navigation: any }> = ({ route, navig
                 </View>
               </View>
             )}
-            contentContainerStyle={styles.chatList}
+            contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
             onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="always"
           />
   
           <View style={styles.inputContainer}>
