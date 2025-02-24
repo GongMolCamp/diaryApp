@@ -8,7 +8,6 @@ import {
   FlatList,
   StyleSheet,
   SafeAreaView,
-  LayoutAnimation,
 } from "react-native";
 import { io } from "socket.io-client";
 import { AppContext } from "../contexts/appContext";
@@ -75,7 +74,7 @@ const MessageScreen: React.FC<{ route: any, navigation: any }> = ({ route, navig
     if (uid === userid) {
     }
     else {
-      setMessages((prev) => [...data, ...prev]);
+      setMessages((prev) => [...prev, ...data]);
     }
   });
 
@@ -124,49 +123,41 @@ const MessageScreen: React.FC<{ route: any, navigation: any }> = ({ route, navig
 
   const sendMessage = async () => {
     if (message.trim()) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      const newMessage = { id: Date.now().toString(), user: userid, text: message, date: new Date().toLocaleTimeString() };
-      setMessages((prevMessages) => [newMessage, ...prevMessages]); // 최신 메시지가 위로 가도록
+      const now = moment();
+      const newMessage = { id: Date.now().toString(), user: userid, text: message, date: now.format('YY-MM-DD HH:mm') };
+      const storedUserInfo = await AsyncStorage.getItem("userInfo");
+      const info = JSON.parse(String(storedUserInfo)).nickname;
+      socket.emit("new message", newMessage, groupid, info); // 메시지 서버로 전송
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+
       setMessage("");
     }
   };
 
-  const renderMessage = (item: MessageProp) => (
+  const renderMessage = (item: MessageProp, index: number) => (
     <View style={[styles.messageContainer, item.user == userid ? { alignSelf: "flex-end" } : { alignSelf: "flex-start" }]}>
       <Text style={[styles.messageText]}>{item.text}</Text>
     </View>
   );
 
-  const [isUserScrolling, setIsUserScrolling] = useState(false);
-
-  const handleScroll = () => {
-    if (!isUserScrolling) {
-      setIsUserScrolling(true);
-    }
-  };
-
-  useEffect(() => {
-    if (!isUserScrolling && messages.length > 0) {
-      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
-    }
-  }, [messages]);
-
   return ( //SafeAreaView
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView  style={styles.container}>
       <KeyboardAvoidComponent>
         <View style={styles.messageCard}>
           <View style={styles.ribbon}>
             <View style={styles.ribbonEnd} />
           </View>
-
+          
           <FlatList
             ref={flatListRef}
             data={messages}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <View style={[
                 styles.messageContainer,
-                item.user === userid ? styles.sentMessage : styles.receivedMessage
+                item.user == userid 
+                  ? styles.sentMessage
+                  : styles.receivedMessage
               ]}>
                 <View style={styles.messageContent}>
                   <Text style={styles.messageText}>{item.text}</Text>
@@ -174,23 +165,14 @@ const MessageScreen: React.FC<{ route: any, navigation: any }> = ({ route, navig
                 </View>
               </View>
             )}
-<<<<<<< HEAD
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
             onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="always"
-=======
-            contentContainerStyle={styles.chatList}
-            showsVerticalScrollIndicator={false}
-            nestedScrollEnabled={true}
-            inverted // 최신 메시지가 아래쪽에 위치
-            onScroll={handleScroll}
-            onMomentumScrollEnd={() => setIsUserScrolling(false)}
->>>>>>> e04c117 (tmp)
           />
-
+  
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -209,7 +191,7 @@ const MessageScreen: React.FC<{ route: any, navigation: any }> = ({ route, navig
       </KeyboardAvoidComponent>
     </SafeAreaView>
   );
-
+  
 };
 
 const styles = StyleSheet.create({
